@@ -1,0 +1,78 @@
+# xnew
+
+`xnew` appends only lines that are not already present in a target file and is tuned for very large inputs with low memory usage.
+
+## Install
+
+```bash
+go install github.com/jsmonhq/xnew@latest
+```
+
+Make sure `$GOPATH/bin` or `$HOME/go/bin` is in your `PATH`.
+
+## Why xnew
+
+- Streams the existing file instead of loading it entirely into memory.
+- Uses a compact open-addressed `uint64` hash set for fast membership checks.
+- Uses XXH3 for high-throughput hashing.
+- Uses buffered I/O to reduce syscall overhead.
+
+## Trade-off
+
+`xnew` deduplicates using a 64-bit XXH3 hash. Collisions are extremely unlikely in practice, but still theoretically possible. This trade-off significantly reduces memory usage compared with exact byte-span indexing.
+
+## Usage
+
+```bash
+# Append new lines from stdin to existing.txt
+cat new_lines.txt | xnew existing.txt
+
+# Write only new unique lines to a separate file
+cat new_lines.txt | xnew existing.txt -o only_new.txt
+
+# Trim leading/trailing spaces before comparing
+cat new_lines.txt | xnew existing.txt -trim
+
+# Quiet mode (no stdout output, exit code only)
+cat new_lines.txt | xnew existing.txt -q
+```
+
+## Build
+
+```bash
+go build -o xnew .
+```
+
+## Flags
+
+| Argument | Description |
+|----------|-------------|
+| `existing-file` | Path to existing file (required). If missing, it is treated as empty. |
+| `-o` | Output file. Default: append to `existing-file`. |
+| `-trim` | Trim spaces before comparing lines. |
+| `-q` | Quiet mode; suppress stdout output. |
+
+## Output behavior
+
+By default, `xnew` writes only newly added lines to stdout (one per line), so you can pipe or redirect output as needed:
+
+```bash
+echo "example" | xnew existing.txt >> captured.txt
+```
+
+## Benchmark timings
+
+The timings below measure the case where we try to write a single line into files that already contain the listed number of lines.
+
+Test instance configuration: `4 GB RAM / 2-core CPU`.
+
+| Number of lines | anew | xnew |
+|-----------------|------|------|
+| 1k | 0.005s | 0.005s |
+| 10k | 0.009s | 0.009s |
+| 100k | 0.070s | 0.031s |
+| 1M | 0.886s | 0.236s |
+| 10M | 12.4773s | 2.830s |
+| 20M | 27.763s | 6.036s |
+| 50M | 56.446s | 16.809s |
+| 100M | 1m38s | 30.534s |

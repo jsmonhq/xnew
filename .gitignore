@@ -1,0 +1,6 @@
+# built binary (root)
+/xnew
+
+/go.sum
+
+.DS_Store
