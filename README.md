@@ -40,6 +40,8 @@ cat new_lines.txt | xnew existing.txt -q
 ## Build
 
 ```bash
+git clone https://github.com/jsmonhq/xnew.git
+cd xnew
 go build -o xnew .
 ```
 
@@ -57,7 +59,7 @@ go build -o xnew .
 By default, `xnew` writes only newly added lines to stdout (one per line), so you can pipe or redirect output as needed:
 
 ```bash
-echo "example" | xnew existing.txt >> captured.txt
+echo "example" | xnew existing.txt >> new.txt
 ```
 
 ## Benchmark timings
