@@ -8,16 +8,17 @@ The timings below measure the case where we try to write a single line into file
 
 Test instance configuration: `4 GB RAM / 2-core CPU`.
 
-| Number of lines | anew | xnew |
-|-----------------|------|------|
-| 1k | 0.005s | 0.005s |
-| 10k | 0.009s | 0.009s |
-| 100k | 0.070s | 0.031s |
-| 1M | 0.886s | 0.236s |
-| 10M | 12.4773s | 2.830s |
-| 20M | 27.763s | 6.036s |
-| 50M | 56.446s | 16.809s |
-| 100M | 1m38s | 30.534s |
+| Number of lines | anew | xnew | Faster |
+|-----------------|------|------|--------|
+| 1K | 0.005s | 0.005s | 1x |
+| 10K | 0.009s | 0.009s | 1x |
+| 100K | 0.070s | 0.031s | 2.26x |
+| 1M | 0.886s | 0.236s | 3.75x |
+| 10M | 12.4773s | 2.830s | 4.41x |
+| 20M | 27.763s | 6.036s | 4.60x |
+| 50M | 56.446s | 16.809s | 3.36x |
+| 100M | 1m38s | 30.534s | 3.21x |
+
 
 
 ## Install
