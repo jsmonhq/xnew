@@ -2,6 +2,24 @@
 
 `xnew` appends only lines that are not already present in a target file and is tuned for very large inputs with low memory usage.
 
+## Benchmark timings
+
+The timings below measure the case where we try to write a single line into files that already contain the listed number of lines.
+
+Test instance configuration: `4 GB RAM / 2-core CPU`.
+
+| Number of lines | anew | xnew |
+|-----------------|------|------|
+| 1k | 0.005s | 0.005s |
+| 10k | 0.009s | 0.009s |
+| 100k | 0.070s | 0.031s |
+| 1M | 0.886s | 0.236s |
+| 10M | 12.4773s | 2.830s |
+| 20M | 27.763s | 6.036s |
+| 50M | 56.446s | 16.809s |
+| 100M | 1m38s | 30.534s |
+
+
 ## Install
 
 ```bash
@@ -62,19 +80,3 @@ By default, `xnew` writes only newly added lines to stdout (one per line), so yo
 echo "example" | xnew existing.txt >> new.txt
 ```
 
-## Benchmark timings
-
-The timings below measure the case where we try to write a single line into files that already contain the listed number of lines.
-
-Test instance configuration: `4 GB RAM / 2-core CPU`.
-
-| Number of lines | anew | xnew |
-|-----------------|------|------|
-| 1k | 0.005s | 0.005s |
-| 10k | 0.009s | 0.009s |
-| 100k | 0.070s | 0.031s |
-| 1M | 0.886s | 0.236s |
-| 10M | 12.4773s | 2.830s |
-| 20M | 27.763s | 6.036s |
-| 50M | 56.446s | 16.809s |
-| 100M | 1m38s | 30.534s |
